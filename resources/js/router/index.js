@@ -4,6 +4,7 @@ import HomeView from "../Pages/HomeView.vue";
 
 import AddMovieView from '../Pages/AddMovieView.vue';
 import MoviesView from '../Pages/MoviesView.vue';
+import LoginView from '../Pages/LoginView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,16 +18,24 @@ const router = createRouter({
             component: AboutView
         },
         {
-            path: '/movies/create',
-            name: 'movies.create',
-            component: AddMovieView,
+            path: '/movies/create',component: AddMovieView, meta: { requiresAuth: true }
         },
         {
-            path: '/movies',
-            name: 'movies',
-            component: MoviesView
+            path: '/movies',component: MoviesView, meta: { requiresAuth: true }
+        },
+        {
+            path: '/login', 
+            component: LoginView
         }
     ]
 })
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth && !localStorage.getItem('token')) {
+        next('/login');
+    } else {
+        next();
+    }
+});
 
 export default router;

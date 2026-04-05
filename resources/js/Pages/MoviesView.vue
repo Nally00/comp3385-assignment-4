@@ -43,9 +43,10 @@ const fetchMovies = () => {
   fetch('/api/v1/movies', {
         method: 'GET',
         headers: {
-            'Accept': 'application/json'
-    }
-  })
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    })
     .then(function (response) {
         return response.json();
     })
